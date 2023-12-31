@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+
+<html>
+
+    <head>
+
+        <title>MY WEATHER APP</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+        <style>
+
+            body{
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Poppins';
+                color: white;
+                background-color: #343434;
+                
+            }
+
+            .container{
+                width: 46%;
+
+            }
+
+            .card{
+                border-radius: 50px;
+                background-color: #343434;
+                box-shadow: 5px 5px 10px #191b1b , -5px -5px 10px #595959;
+                padding: 3%;
+                text-align: center;
+            }
+
+            .card h4{
+                font-size: 8rem;
+                font-weight: 400;
+                margin: 1rem 0;
+            }
+
+            img #icon{
+                width: 80%;
+
+            }
+
+            ion-icon {
+                font-size: 20px;
+                }
+
+
+            h6 #weather{
+                text-transform: capitalize;
+
+            }
+
+            button.refresh{
+                display: block;
+                width: 50px;
+                margin: 5px auto;
+                background: transparent;
+                border: 0;
+                color: #9c9c9d;
+                font-size: 15px;
+                height: 50px;
+                border-radius: 50%;
+                box-shadow: 5px 2px 5px #252525 , 2.5px 2.5px 9px #4a4a4a;
+                
+            }
+
+            button.refresh:hover{
+                box-shadow: inset 5px 2px 5px #252525, inset 2.5px 2.5px 9px #4a4a4a;
+            }
+
+            .search-icon{
+                font-size: 15px;
+                background-color:#4a4a4a ;
+                margin: 5px auto;
+                background: transparent;
+                border: 0;
+                color: #9c9c9d;
+                border-radius: 50%;
+                box-shadow: 5px 2px 5px #252525 , 2.5px 2.5px 9px #4a4a4a;
+                cursor: pointer;
+            }
+
+            .search{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .search-bar{
+                background-color: rgba(255,255,255,0.2);
+                display: flex;
+                align-items: center;
+                border-radius: 2px;
+
+            }
+
+            .search-bar input{
+                background: transparent;
+                flex: 1;
+                border: 0;
+                outline: none;
+                font-size: 15px;
+
+            }
+
+            
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <div class="card">
+
+                <h1>YOUR WEATHER </h1>
+
+                <div class="search">
+
+                    <form action="" name="search-bar" class="search-bar" onsubmit="return false">
+                        <input type="text" placeholder="Search" id="search-bar">
+                        <button type="submit" id="search-button"><ion-icon name="search-outline" class="search-icon"></ion-icon></button>
+                    </form>
+                </div>
+
+                <h2 id="location"><ion-icon name="location" id="loc-icon"></ion-icon>palakollu</h2>
+
+                <h2 id="weather">CLOUDY</h2>
+
+                <h4><span id="temp">31</span><sup>o</sup>C</h4>
+
+                <img src="" id="icon">
+
+                <button onclick="windows.location.reload()" class="refresh"><ion-icon name="refresh-outline"></ion-icon></button>
+
+            </div>
+
+
+        </div>
+
+
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    
+        <script>
+
+            let loc;
+            // taking location from search input
+            document.getElementById('search-button').onclick = function(){
+
+                loc = document.getElementById('search-bar').value;
+                document.getElementById('location').innerHTML = '<ion-icon name="location" id="loc-icon"></ion-icon>' + ' ' + document.getElementById('search-bar').value;
+                console.log(loc);
+            };
+
+
+            const link = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+
+            const apiKey = '7eab817d912539a1077384e0bdc13b54';
+
+            const searchBox = document.querySelector('.search-bar input');
+            const searchBtn = document.querySelector('.search-bar button');
+
+            async function checkWeather(city){
+                const response = await fetch(link + city +'&appid='+apiKey);
+                var data = await response.json();
+                console.log(data);
+
+                document.getElementById('location').innerHTML = data.name;
+                document.getElementById('temp').innerHTML = Math.round( data.main.temp);
+                document.getElementById('weather').innerHTML = data.weather[0].description;
+                document.getElementById('icon').source = 'images/'+'data.weather[0].description'+'.png';
+
+
+            };
+
+            searchBtn.addEventListener('click',()=>{
+                checkWeather(searchBox.value);
+            })
+
+            
+            
+        </script>
+
+    </body>
+</html>
